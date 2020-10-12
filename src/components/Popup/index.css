@@ -1,0 +1,36 @@
+.list-popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    background: rgba(44,40,36,0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.popup-container {
+    width: 652px;
+    background: rgba(253,246,230,1);
+    border: 2px solid rgba(72,53,38,1);
+    box-shadow: 0px -14px 0px 0px rgba(224,211,181,1) inset;
+    border-radius: 30px;
+    position: relative;
+}
+.close-btn-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 120px;
+    height: 120px;
+    z-index: 1;
+}
+
+.close-btn {
+    position: absolute;
+    right: 26px;
+    top: 26px;
+    width: 60px;
+    height: 60px;
+}

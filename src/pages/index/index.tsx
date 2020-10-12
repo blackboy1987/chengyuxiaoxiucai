@@ -6,6 +6,9 @@ import classNames from 'classnames';
 import './index.css';
 
 import {chengyu} from '@/data/chengyu';
+import Popup from "@/components/Popup";
+import PopupRank from "@/components/Popup/PopupRank";
+import Audio from "@/util/audio";
 
 export default () => {
 
@@ -13,6 +16,7 @@ export default () => {
   const [answer,setAnswer] = useState<string[]>([]);
   const [isShakeBtn1,setIsShakeBtn1] = useState<boolean>(true);
   const [isShakeBtn2,setIsShakeBtn2] = useState<boolean>(true);
+  const [popupRank,setPopupRank] = useState<boolean>(false);
 
   usePageEvent('onLoad',()=>{
     const {gameBox,answer} = chengyu.data;
@@ -36,6 +40,11 @@ export default () => {
     },600);
   }
 
+  const showPopupRank = (flag?:boolean) =>{
+    Audio.playAudio("btnClick");
+    setPopupRank(!!flag);
+  }
+
   const selectBox = (rowId:number,columnId:number,item:any) =>{
     console.log(rowId,columnId,item);
   }
@@ -48,15 +57,15 @@ export default () => {
                 <View className='game_row' key={index}>
                   {
                     rowItem.map((item:any,index1:number)=>{
-                      let style = 'game_box';
+                      let style = '';
                       if(item.show&&!item.canSelect&&!item.ans){
                         style = "game_box space block";
                       }
                       if(!item.show&&!item.canSelect){
                         style = "game_box";
                       }
-                      if(!item.canSelect&&item.show && item.ans){
-                        style = style+" space";
+                      if(item.canSelect&&item.show && item.ans){
+                        style = "game_box space";
                       }
                       return (
                           <View onTap={()=>selectBox(index,index1,item)} className={style} key={`${index}_${index1}`}>
@@ -113,6 +122,9 @@ export default () => {
             }
           </View>
         </View>
+
+        <Button onTap={()=>showPopupRank(true)}>adfa</Button>
+        <PopupRank visible={popupRank} onClose={()=>showPopupRank(false)} />
       </View>
   );
 };
