@@ -7,7 +7,6 @@ interface PopupProps {
     onClose:()=>void;
 }
 const Popup:React.FC<PopupProps> = ({onClose,visible,children}) =>{
-console.log("popup",visible)
     return (
         <>
             {

@@ -6,8 +6,8 @@ import {login, setStorageSync} from "@/util/utils";
 import request from '@/util/request';
 import {useState} from "react";
 import Loading from "@/pages/index/components/Loading";
-import Detail from "@/pages/index/components/Detail";
 import NavBar from "@/components/NavBar";
+import PopupRank from "@/components/Popup/PopupRank";
 
 let timer:any;
 let index = 0;
@@ -57,11 +57,9 @@ export default () => {
               isLogin ? (<NavBar isShowPower />) : null
           }
           <View className='page-container'>
-              {
-                  !isLogin ? (<Loading showText={showText} />):(<Detail />)
-              }
-          </View>
 
+          </View>
+          <PopupRank visible={true} onClose={()=>console.log("aa")} />
       </View>
   );
 };
