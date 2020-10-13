@@ -13,6 +13,7 @@ interface PopupRankProps {
 
 interface PopupRankState {
     jobList:any[];
+    currentJobRank:number;
 }
 
 class PopupRank extends React.Component<PopupRankProps,PopupRankState>{

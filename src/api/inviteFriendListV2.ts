@@ -1,0 +1,1 @@
+export const inviteFriendListV2 = {"totalValue":0,"inviteRecords":[{"energyValue":2,"inviteIndex":1},{"energyValue":2,"inviteIndex":2},{"energyValue":2,"inviteIndex":3},{"energyValue":2,"inviteIndex":4},{"energyValue":2,"inviteIndex":5}]}

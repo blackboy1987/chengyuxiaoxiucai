@@ -1,0 +1,1 @@
+export const shareAddEnergyStrategy = {"addValue":2,"canSuccessShare":1,"failRate":"0.0","isFirst":1,"leftTimes":99,"successRate":"1.0","timeInterVal":3000,"textList":["分享失败，请分享到群聊","请勿重复分享，换一个群试试吧","今天这个群分享过了，换一个群试试吧"]}

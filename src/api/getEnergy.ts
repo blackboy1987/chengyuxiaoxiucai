@@ -1,0 +1,1 @@
+export const getEnergy={"recoverTime":1200,"energyMaxValue":5,"energyTotal":2,"energyExtraValue":0,"energyCountDown":198,"energyValue":2,"energyAllCountDown":3798}

@@ -1,0 +1,1 @@
+export const tableScreenStrategy2 = {"0":-1,"14":3,"21":2,"31":1,"1000":0}

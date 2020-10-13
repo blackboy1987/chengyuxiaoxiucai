@@ -59,7 +59,6 @@ export default () => {
           <View className='page-container'>
 
           </View>
-          <PopupRank visible={true} onClose={()=>console.log("aa")} />
       </View>
   );
 };
