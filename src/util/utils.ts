@@ -2,6 +2,8 @@
  * 获取设备信息
  * @param callback
  */
+import Constants from "@/util/constants";
+
 export const getSystemInfo = (callback:(res:any)=>void) => {
     wx.getSystemInfo({
         success(res: any) {
@@ -65,4 +67,8 @@ export const login = (callback:(res:any)=>void) =>{
             })
         }
     })
+}
+
+export const imageShow = (url:string) =>{
+    return `${Constants.resourceUrl}${url}`;
 }
