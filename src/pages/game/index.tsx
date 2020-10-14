@@ -5,15 +5,15 @@ import {usePageEvent} from 'remax/macro';
 import classNames from 'classnames';
 import './index.css';
 
-import {chengyu} from '@/data/chengyu';
-import Popup from "@/components/Popup";
+
 import PopupRank from "@/components/Popup/PopupRank";
 import Audio from "@/util/audio";
 import request from "@/util/request";
 
 export default () => {
 
-  const [gameBox,setGameBox] = useState<any[]>([]);
+  const [gameBoxes,setGameBoxes] = useState<any[]>([]);
+  const [currentKey,setCurrentKey] = useState<string>("");
   const [answer,setAnswer] = useState<string[]>([]);
   const [isShakeBtn1,setIsShakeBtn1] = useState<boolean>(true);
   const [isShakeBtn2,setIsShakeBtn2] = useState<boolean>(true);
@@ -21,16 +21,18 @@ export default () => {
   const [idiom,setIdiom] = useState<any>({});
 
   usePageEvent('onLoad',()=>{
-    const {gameBox,answer} = chengyu.data;
-    setGameBox(gameBox);
     setAnswer(answer);
-    load(22);
+    load(4);
   });
 
   const load=(id:number)=>{
     request("api/game/level",(res:any)=>{
       const {data} = res;
       setIdiom(data);
+      setAnswer(data.answer);
+      const {newGameBoxes,newCurrentKey} = render(data.gameBoxes);
+      setGameBoxes(newGameBoxes);
+      setCurrentKey(newCurrentKey);
       console.log("api/game/level",res);
     },{
       data:{
@@ -39,8 +41,42 @@ export default () => {
     });
   }
 
+  const render=(gameBoxes1:any[])=>{
+    let newCurrentKey = '';
+    const newGameBoxes = (gameBoxes1 || [[]]).map((rowItem:any[],index:number)=>{
+      let newRowItem=(rowItem||[]).map((item:any,index1:number)=>{
+        let newItem = {
+            ...item,
+        };
+        let style = '';
+        if(newItem.show&&!newItem.canSelect&&!newItem.ans){
+          style = "game_box space block";
+        }
+        if(!newItem.show&&!newItem.canSelect){
+          style = "game_box";
+        }
+        if(newItem.canSelect&&newItem.show && newItem.ans){
+          if(!newCurrentKey){
+            newCurrentKey = `${index}_${index1}`;
+          }
+          style = "game_box space";
+        }
+        if(currentKey===`${index}_${index1}`){
+          style = style +" active";
+        }
+        newItem.style = style;
+        return newItem;
+      });
+      return newRowItem;
+    });
+    return {
+      newGameBoxes,
+      newCurrentKey
+    }
+  }
+
+
   const animationEnd1 = () =>{
-    console.log("---","animationEnd1");
     setIsShakeBtn1(false);
     setTimeout(()=>{
       setIsShakeBtn2(true)
@@ -48,7 +84,6 @@ export default () => {
   }
 
   const animationEnd2 = () =>{
-    console.log("---","animationEnd2");
     setIsShakeBtn2(false);
     setTimeout(()=>{
       setIsShakeBtn1(true)
@@ -61,29 +96,28 @@ export default () => {
   }
 
   const selectBox = (rowId:number,columnId:number,item:any) =>{
-    console.log(rowId,columnId,item);
+    if (item.show && item.canSelect && !item.isSuccess){
+      Audio.playAudio("changeBox");
+      setCurrentKey(`${rowId}_${columnId}`);
+      console.log(rowId,columnId,item);
+    }
   }
 
+  const selectWord = (ans:string) =>{
+    Audio.playAudio("selectWord");
+  }
+
+  console.log("gameBoxes",gameBoxes);
   return (
       <View className='game'>
         <View className='game_container'>
           {
-            idiom.gameBox1.map((rowItem:any[],index:number)=>(
+            (gameBoxes || [[]]).map((rowItem:any[],index:number)=>(
                 <View className='game_row' key={index}>
                   {
-                    rowItem.map((item:any,index1:number)=>{
-                      let style = '';
-                      if(item.show&&!item.canSelect&&!item.ans){
-                        style = "game_box space block";
-                      }
-                      if(!item.show&&!item.canSelect){
-                        style = "game_box";
-                      }
-                      if(item.canSelect&&item.show && item.ans){
-                        style = "game_box space";
-                      }
+                    (rowItem||[]).map((item:any,index1:number)=>{
                       return (
-                          <View onTap={()=>selectBox(index,index1,item)} className={style} key={`${index}_${index1}`}>
+                          <View onTap={()=>selectBox(index,index1,item)} className={classNames(item.style,currentKey===`${index}_${index1}` ? 'active':'')} key={`${index}_${index1}`}>
                             {item.text}
                           </View>
                       )
@@ -127,8 +161,8 @@ export default () => {
         <View className='select_container'>
           <View className='select-row'>
             {
-              idiom.answer.map((ans,index)=>(
-                  <View className='select-item' key={index}>
+              (answer || []).map((ans,index)=>(
+                  <View onTap={()=>selectWord(ans)} className='select-item' key={index}>
                     <Button className='btn_default select_box big-select2'>
                       {ans}
                     </Button>
