@@ -9,6 +9,7 @@ import {chengyu} from '@/data/chengyu';
 import Popup from "@/components/Popup";
 import PopupRank from "@/components/Popup/PopupRank";
 import Audio from "@/util/audio";
+import request from "@/util/request";
 
 export default () => {
 
@@ -17,12 +18,26 @@ export default () => {
   const [isShakeBtn1,setIsShakeBtn1] = useState<boolean>(true);
   const [isShakeBtn2,setIsShakeBtn2] = useState<boolean>(true);
   const [popupRank,setPopupRank] = useState<boolean>(false);
+  const [idiom,setIdiom] = useState<any>({});
 
   usePageEvent('onLoad',()=>{
     const {gameBox,answer} = chengyu.data;
     setGameBox(gameBox);
     setAnswer(answer);
+    load(22);
   });
+
+  const load=(id:number)=>{
+    request("api/game/level",(res:any)=>{
+      const {data} = res;
+      setIdiom(data);
+      console.log("api/game/level",res);
+    },{
+      data:{
+        id,
+      }
+    });
+  }
 
   const animationEnd1 = () =>{
     console.log("---","animationEnd1");
@@ -53,7 +68,7 @@ export default () => {
       <View className='game'>
         <View className='game_container'>
           {
-            gameBox.map((rowItem:any[],index:number)=>(
+            idiom.gameBox1.map((rowItem:any[],index:number)=>(
                 <View className='game_row' key={index}>
                   {
                     rowItem.map((item:any,index1:number)=>{
@@ -112,7 +127,7 @@ export default () => {
         <View className='select_container'>
           <View className='select-row'>
             {
-              answer.map((ans,index)=>(
+              idiom.answer.map((ans,index)=>(
                   <View className='select-item' key={index}>
                     <Button className='btn_default select_box big-select2'>
                       {ans}

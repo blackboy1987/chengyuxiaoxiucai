@@ -2,8 +2,9 @@ import { AppConfig } from "remax/wechat";
 
 const config: AppConfig = {
   pages: [
+    'pages/game/index',
+      'pages/index/index',
     'pages/finish/index',
-      'pages/index/index'
   ],
   window: {
     navigationBarTitleText: 'Remax Wechat Template',
