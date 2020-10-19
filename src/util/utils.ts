@@ -72,3 +72,9 @@ export const login = (callback:(res:any)=>void) =>{
 export const imageShow = (url:string) =>{
     return `${Constants.resourceUrl}${url}`;
 }
+
+export const filterArray=(arr:string[])=>{
+    return arr.filter((item,index,arr)=>{
+        return arr.indexOf(item,0) === index;
+    })
+}

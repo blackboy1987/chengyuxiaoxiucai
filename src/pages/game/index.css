@@ -254,12 +254,18 @@
     transform: scale(1,1);
     position: relative;
 }
-
+.big-select1 {
+    width: 115px;
+    height: 115px;
+}
 .big-select2 {
     width: 100px;
     height: 100px;
 }
-
+.select_box.selected {
+    opacity: 0;
+    transform: scale(0,0);
+}
 .btn-scale {
     animation: btnScale 0.6s linear;
 }
