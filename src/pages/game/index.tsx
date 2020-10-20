@@ -146,36 +146,36 @@ export default () => {
     checkAnswer(newGameBoxes,rowId,columnId,ans);
   }
 
-  const checkAnswer=(newGameBoxes:any,rowId:number,columnId:number,ans:string)=>{
-    const word1 = new Map;
-    for (let row=rowId-3;row<=rowId+3;row+=1){
-      if(row>=0&&row<9){
-        word1.set(`${row}_${columnId}`,'');
+  const checkAnswer=(newGameBoxes:any,rowId:number,columnId:number,ans:string)=> {
+    const word1 = new Map();
+    for (let row = rowId - 3; row <= rowId + 3; row += 1) {
+      if (row >= 0 && row < 9) {
+        word1.set(`${row}_${columnId}`, '');
       }
     }
 
     const word2 = new Map();
-    for (let column=columnId-3;column<=columnId+3;column+=1){
-      if(column>=0&&column<9){
-        word2.set(`${rowId}_${column}`,'');
+    for (let column = columnId - 3; column <= columnId + 3; column += 1) {
+      if (column >= 0 && column < 9) {
+        word2.set(`${rowId}_${column}`, '');
       }
     }
     // 循环gameBox里面的数据，看看有没有完整的4字成语。
-    (newGameBoxes || [[]]).forEach((rowItem:any[])=>{
-      (rowItem||[]).forEach((item:any)=>{
+    (newGameBoxes || [[]]).forEach((rowItem: any[]) => {
+      (rowItem || []).forEach((item: any) => {
 
-        if(word1.get(`${item.x}_${item.y}`)===''){
-          if(item.text!==''){
-            word1.set(`${item.x}_${item.y}`,item.text);
-          }else{
-            word1.set(`${item.x}_${item.y}`,"龠");
+        if (word1.get(`${item.x}_${item.y}`) === '') {
+          if (item.text !== '') {
+            word1.set(`${item.x}_${item.y}`, item.text);
+          } else {
+            word1.set(`${item.x}_${item.y}`, "龠");
           }
         }
-        if(word2.get(`${item.x}_${item.y}`)===''){
-          if(item.text!==''){
-            word2.set(`${item.x}_${item.y}`,item.text);
-          }else{
-            word2.set(`${item.x}_${item.y}`,"龠");
+        if (word2.get(`${item.x}_${item.y}`) === '') {
+          if (item.text !== '') {
+            word2.set(`${item.x}_${item.y}`, item.text);
+          } else {
+            word2.set(`${item.x}_${item.y}`, "龠");
           }
         }
       });
@@ -185,35 +185,54 @@ export default () => {
     let idiom2 = '';
 
     // 这里做扩展处理。超过2个字都算成语。
-    word1.forEach(value =>{
-      idiom1 +=value;
+    word1.forEach(value => {
+      idiom1 += value;
     });
 
-    word2.forEach(value =>{
-      idiom2 +=value;
+    word2.forEach(value => {
+      idiom2 += value;
     });
 
-    let position1 = 0;
-    for (let position11=0;position11<idiom1.length-3;position11++){
-      idioms.forEach(idiom=>{
-        if(idiom===idiom1.substr(position11,4)){
+    let position1 = -1;
+    for (let position11 = 0; position11 < idiom1.length - 3; position11++) {
+      idioms.forEach(idiom => {
+        if (idiom === idiom1.substr(position11, 4)) {
           position1 = position11;
-          console.log(idiom===idiom1.substr(position11,4),word1,position1,position11);
         }
       })
     }
 
 
-    let position2 = 0;
-    for (let position22=0;position22<idiom2.length-3;position22++){
-      idioms.forEach(idiom=>{
-        if(idiom===idiom2.substr(position22,4)){
-          console.log(idiom===idiom2.substr(position22,4),word2,position2,position22);
+    let position2 = -1;
+    for (let position22 = 0; position22 < idiom2.length - 3; position22++) {
+      idioms.forEach(idiom => {
+        if (idiom === idiom2.substr(position22, 4)) {
           position2 = position22;
         }
       })
     }
-
+    if (position1 >= 0) {
+      let activityKeys: string[] = [];
+      let index = 0;
+      word1.forEach((value, key) => {
+        if (index < position1 + 4) {
+          activityKeys.push(key);
+        }
+        index += 1;
+      });
+      console.log("activityKeys1", activityKeys);
+    }
+    if (position2 >= 0) {
+      let activityKeys: string[] = [];
+      let index = 0;
+      word2.forEach((value, key) => {
+        if (index < position1 + 4) {
+          activityKeys.push(key);
+        }
+        index += 1;
+      });
+      console.log("activityKeys2", activityKeys);
+    }
   }
 
 
